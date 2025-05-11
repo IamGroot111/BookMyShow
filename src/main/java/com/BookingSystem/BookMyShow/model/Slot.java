@@ -1,28 +1,51 @@
 package com.BookingSystem.BookMyShow.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import java.util.*;
 
+@Entity
 public class Slot {
 
-    private String timeSlot;
-    private int availableCapacity;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Slot(String timeSlot, int availableCapacity) {
-        this.timeSlot = timeSlot;
-        this.availableCapacity = availableCapacity;
+    private String timeRange;
+
+    private int capacity;
+
+    @ManyToOne
+    @JoinColumn(name = "show_name")
+    @JsonIgnore
+    private Show show;
+
+    @OneToMany(mappedBy = "slot", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Booking> bookings = new ArrayList<>();
+
+    // Constructors, Getters, Setters
+    public Slot() {}
+
+    public Slot(String timeRange, int capacity, Show show) {
+        this.timeRange = timeRange;
+        this.capacity = capacity;
+        this.show = show;
     }
 
-    public String getTimeSlot() {
-        return timeSlot;
-    }
+    public Long getId() { return id; }
 
-    public void setTimeSlot(String timeSlot) {
-        this.timeSlot = timeSlot;
-    }
+    public String getTimeRange() { return timeRange; }
 
-    public int getAvailableCapacity() {
-        return availableCapacity;
-    }
+    public void setTimeRange(String timeRange) { this.timeRange = timeRange; }
 
-    public void setAvailableCapacity(int availableCapacity) {
-        this.availableCapacity = availableCapacity;
-    }
+    public int getCapacity() { return capacity; }
+
+    public void setCapacity(int capacity) { this.capacity = capacity; }
+
+    public Show getShow() { return show; }
+
+    public void setShow(Show show) { this.show = show; }
+
+    public List<Booking> getBookings() { return bookings; }
+
+    public void setBookings(List<Booking> bookings) { this.bookings = bookings; }
 }

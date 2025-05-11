@@ -1,54 +1,36 @@
 package com.BookingSystem.BookMyShow.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.*;
+import java.util.*;
 
+@Entity
 public class Show {
 
-    private String showName;
+    @Id
+    private String name;
+
     private String genre;
-    private List<Slot> slots;
 
-    public Show(String showName, String genre) {
-        this.showName = showName;
-        this.genre = genre;
-        this.slots = new ArrayList<>();
-    }
+    @OneToMany(mappedBy = "show", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Slot> slots = new ArrayList<>();
 
-    public void addSlot(Slot slot) {
-        this.slots.add(slot);
-    }
+    // Constructors, Getters, Setters
+    public Show() {}
 
-    public Slot getSlot(String timeSlot) {
-        for (Slot slot : slots) {
-            if (slot.getTimeSlot().equals(timeSlot)) {
-                return slot;
-            }
-        }
-        return null;
-    }
-
-    public String getShowName() {
-        return showName;
-    }
-
-    public void setShowName(String showName) {
-        this.showName = showName;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
+    public Show(String name, String genre) {
+        this.name = name;
         this.genre = genre;
     }
 
-    public List<Slot> getSlots() {
-        return slots;
-    }
+    public String getName() { return name; }
 
-    public void setSlots(List<Slot> slots) {
-        this.slots = slots;
-    }
+    public void setName(String name) { this.name = name; }
+
+    public String getGenre() { return genre; }
+
+    public void setGenre(String genre) { this.genre = genre; }
+
+    public List<Slot> getSlots() { return slots; }
+
+    public void setSlots(List<Slot> slots) { this.slots = slots; }
 }

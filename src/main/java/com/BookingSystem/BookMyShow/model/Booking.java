@@ -1,25 +1,43 @@
 package com.BookingSystem.BookMyShow.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.*;
+
+@Entity
 public class Booking {
 
+    @Id
     private String bookingId;
-    private String userName;
-    private String showName;
-    private String timeSlot;
-    private int tickets;
-    private boolean isConfirmed;
-    
 
-    private boolean isWaitListed;
+    private String username;
 
-    
+    // Renamed for consistency with service: numTickets instead of seatCount
+    private int numTickets;
 
-    public Booking(String bookingId, String userName, String showName, String timeSlot, int tickets) {
+    private boolean confirmed;
+
+    private boolean waitlisted;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "slot_id", nullable = false)
+    @JsonIgnore
+    private Slot slot;
+
+    public Booking() {}
+
+    public Booking(String bookingId,
+                   String username,
+                   int numTickets,
+                   boolean confirmed,
+                   boolean waitlisted,
+                   Slot slot) {
         this.bookingId = bookingId;
-        this.userName = userName;
-        this.showName = showName;
-        this.timeSlot = timeSlot;
-        this.tickets = tickets;
+        this.username = username;
+        this.numTickets = numTickets;
+        this.confirmed = confirmed;
+        this.waitlisted = waitlisted;
+        this.slot = slot;
     }
 
     public String getBookingId() {
@@ -30,50 +48,43 @@ public class Booking {
         this.bookingId = bookingId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getShowName() {
-        return showName;
+    public int getNumTickets() {
+        return numTickets;
     }
 
-    public void setShowName(String showName) {
-        this.showName = showName;
+    public void setNumTickets(int numTickets) {
+        this.numTickets = numTickets;
     }
 
-    public String getTimeSlot() {
-        return timeSlot;
-    }
-
-    public void setTimeSlot(String timeSlot) {
-        this.timeSlot = timeSlot;
-    }
-
-    public int getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(int tickets) {
-        this.tickets = tickets;
-    }
     public boolean isConfirmed() {
-        return isConfirmed;
+        return confirmed;
     }
 
-    public void setConfirmed(boolean isConfirmed) {
-        this.isConfirmed = isConfirmed;
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
 
-    public boolean isWaitListed() {
-        return isWaitListed;
+    public boolean isWaitlisted() {
+        return waitlisted;
     }
 
-    public void setWaitListed(boolean isWaitListed) {
-        this.isWaitListed = isWaitListed;
+    public void setWaitlisted(boolean waitlisted) {
+        this.waitlisted = waitlisted;
+    }
+
+    public Slot getSlot() {
+        return slot;
+    }
+
+    public void setSlot(Slot slot) {
+        this.slot = slot;
     }
 }
